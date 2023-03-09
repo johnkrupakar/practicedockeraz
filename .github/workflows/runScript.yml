@@ -18,10 +18,10 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          Write-Host "Hello"
+          $acrName = "pacticetest"
+          $acrRepository = "pacticetest/pacticetest"
+          $maxTags = 1
+          $tagsCount = (az acr repository show-tags --name $acrName --repository $acrRepository).length-2
+          if ($tagsCount -gt $maxTags){az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
         azPSVersion: "latest"
-    
-    - uses: actions/checkout@v1    
-    - name: Run Script
-      run: ./tags_delete.ps1
-      shell: pwsh
+        

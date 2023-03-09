@@ -1,0 +1,20 @@
+name: running the powershell script
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Azure Container Registry Login
+      uses: Azure/docker-login@v1
+      with:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+        login-server: pacticetest.azurecr.io
+        
+    - uses: actions/checkout@v1    
+    - name: Run Script
+      run: ./tags_delete.ps1
+      shell: pwsh

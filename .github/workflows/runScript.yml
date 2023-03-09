@@ -18,7 +18,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          Get-AzVM -ResourceGroupName "ResourceGroup11"
+          Get-AzVM -ResourceGroupName "GithubActionsPractice"
         azPSVersion: "latest"
     
     - uses: actions/checkout@v1    

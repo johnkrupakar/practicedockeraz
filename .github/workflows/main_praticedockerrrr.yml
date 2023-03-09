@@ -32,10 +32,6 @@ jobs:
         push: true
         tags: pacticetest.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/pacticetest:${{ github.sha }}
         file: ./Dockerfile
-    
-    - name: Script
-      run: ./tags_delete.ps1
-      shell: pwsh
 
   deploy:
     runs-on: ubuntu-latest

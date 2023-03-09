@@ -42,7 +42,7 @@ jobs:
     - name: Login to ACR
       uses: docker/login-action@v1
       with:
-        registry: youracr.azurecr.io
+        registry: pacticetest.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 

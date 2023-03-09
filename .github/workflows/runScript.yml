@@ -18,6 +18,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
+          Write-Host "Hello"
         azPSVersion: "latest"
     
     - uses: actions/checkout@v1    

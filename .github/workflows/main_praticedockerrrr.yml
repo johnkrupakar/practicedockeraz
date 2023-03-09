@@ -32,7 +32,24 @@ jobs:
         push: true
         tags: pacticetest.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/pacticetest:${{ github.sha }}
         file: ./Dockerfile
+        
+  powershell:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
+    - name: Login to ACR
+      uses: docker/login-action@v1
+      with:
+        registry: youracr.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Run PowerShell script
+      run: ./tags_delete.ps1
+      shell: pwsh
+    
   deploy:
     runs-on: ubuntu-latest
     needs: build

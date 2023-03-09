@@ -3,6 +3,7 @@ $acrName = "pacticetest"
 $acrRepository = "pacticetest/pacticetest"
 $maxTags = 1
 
+sudo az acr login -n $acrName
 #Get the number of tags
 $tagsCount = (az acr repository show-tags --name $acrName --repository $acrRepository).length-2
 

@@ -18,6 +18,6 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          az acr login -n pacticetest
+          sudo az acr login -n pacticetest
         azPSVersion: "latest"
         

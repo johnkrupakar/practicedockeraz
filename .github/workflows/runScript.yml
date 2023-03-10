@@ -18,11 +18,6 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $acrName = "pacticetest"
-          $acrRepository = "pacticetest/pacticetest"
-          $maxTags = 1
-          sudo az acr login -n pacticetest
-          $tagsCount = (az acr repository show-tags --name $acrName --repository $acrRepository).length-2
-          if ($tagsCount -gt $maxTags){az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
+          az acr login -n pacticetest
         azPSVersion: "latest"
         

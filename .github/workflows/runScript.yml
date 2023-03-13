@@ -19,5 +19,6 @@ jobs:
       with:
         inlineScript: |
           sudo az login -n pacticetest
+          sudo az acr login -n pacticetest
         azPSVersion: "latest"
         

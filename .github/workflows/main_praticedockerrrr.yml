@@ -38,14 +38,14 @@ jobs:
     
     steps:
     - name: Azure Container Registry Login
-      uses: Azure/docker-login@v2
+      uses: Azure/docker-login@v1
       with:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
         login-server: pacticetest.azurecr.io
     
     - name: Run Azure PowerShell script
-      uses: azure/powershell@v2
+      uses: azure/powershell@v1
       with:
         inlineScript: |
           sudo az login --username nishani.12000526@lpu.in --password Njohn526#

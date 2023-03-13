@@ -45,6 +45,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
+          sudo az login --username nishani.12000526@lpu.in --password Njohn526#
           sudo az acr login -n pacticetest --username pacticetest --password KxRDve1stf0tFLWIzIq7FdG08Q4MtwkYuJS+1zcyH6+ACRD0IVRn
           $acrName = "pacticetest"
           $acrRepository = "pacticetest/pacticetest"

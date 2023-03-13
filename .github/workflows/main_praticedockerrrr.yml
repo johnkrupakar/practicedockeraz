@@ -66,6 +66,7 @@ jobs:
 
     steps:
     - name: Deploy to Azure Web App
+      if: success()
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:

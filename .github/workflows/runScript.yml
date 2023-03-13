@@ -20,11 +20,10 @@ jobs:
         inlineScript: |
           sudo az login -n pacticetest
           sudo az acr login -n pacticetest --username pacticetest --password KxRDve1stf0tFLWIzIq7FdG08Q4MtwkYuJS+1zcyH6+ACRD0IVRn
-          Write-Host "Hello"
           $acrName = "pacticetest"
           $acrRepository = "pacticetest/pacticetest"
           $maxTags = 1
           $tagsCount = (az acr repository show-tags --name $acrName --repository $acrRepository).length-2
-          if ($tagsCount -gt $maxTags){ az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
+          #if ($tagsCount -gt $maxTags){ az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
         azPSVersion: "latest"
         

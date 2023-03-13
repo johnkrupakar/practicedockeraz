@@ -18,7 +18,8 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          sudo az login -n pacticetest
-          sudo az acr login -n pacticetest
+          # sudo az login -n pacticetest
+          # sudo az acr login -n pacticetest
+          Write-Host "Hello"
         azPSVersion: "latest"
         

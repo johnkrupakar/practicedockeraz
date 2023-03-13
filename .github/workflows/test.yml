@@ -49,7 +49,7 @@ jobs:
           sudo az acr login -n pacticetest --username pacticetest --password KxRDve1stf0tFLWIzIq7FdG08Q4MtwkYuJS+1zcyH6+ACRD0IVRn
           $acrName = "pacticetest"
           $acrRepository = "pacticetest/pacticetest"
-          $maxTags = 12
+          $maxTags = 14
           $tagsCount = (sudo az acr repository show-tags --name $acrName --repository $acrRepository).length-2
           if ($tagsCount -gt $maxTags){ sudo az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { sudo az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
         azPSVersion: "latest"

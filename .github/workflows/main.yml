@@ -1,0 +1,80 @@
+name: Build and deploy container app to Azure Web App - praticedockerrrr
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to registry
+      uses: docker/login-action@v1
+      with:
+        registry: https://pacticetest.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_cf01eaa600cf4509aca0f34066b899ff }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: pacticetest.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/pacticetest:${{ github.sha }}
+        file: ./Dockerfile
+        
+  script:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Azure Container Registry Login
+      uses: Azure/docker-login@v1
+      with:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+        login-server: pacticetest.azurecr.io
+        
+    - uses: actions/checkout@v1    
+    - name: Run Script
+      run: ./tags_delete.ps1
+      shell: pwsh
+    
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          # sudo az login --username ${{ secrets.AZ_USERNAME }} --password ${{ secrets.AZ_PASSWORD }}
+          # sudo az acr login -n pacticetest --username ${{ secrets.ACR_USERNAME }} --password ${{ secrets.ACR_PASSWORD }}
+          # $acrName = "pacticetest"
+          # $acrRepository = "pacticetest/pacticetest"
+          # $maxTags = 14
+          # $tagsCount = (sudo az acr repository show-tags --name $acrName --repository $acrRepository).length-2
+          # if ($tagsCount -eq $maxTags){ sudo az acr repository show-tags -n $acrName --repository $acrRepository --orderby time_asc --top 1 --query "[0]" --output tsv | foreach { sudo az acr repository delete --name $acrName --image ${acrRepository}:$_ --yes } }
+          # Delete the untagged manifest
+          sudo az acr repository show-manifests -n $acrName --repository $acrRepository --query "[?tags[0]==null].digest" -o tsv | %{ az acr repository delete -n $acrName -t ${acrRepository}@$_  --yes }
+        azPSVersion: "latest"
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: script
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      if: success()
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'praticedockerrrr'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_409b0ca16245480fbb856b07fb25e559 }}
+        images: 'pacticetest.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_66023571c94244e39e051c8f0a6bfeab }}/pacticetest:${{ github.sha }}'

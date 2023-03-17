@@ -7,7 +7,7 @@ $acr_password = $envValues[3];
 
 sudo az login --username $az_username --password $az_password
 sudo az acr login -n pacticetest --username $acr_username --password $acr_password
-acrName = "pacticetest"
+$acrName = "pacticetest"
 $acrRepository = "pacticetest/pacticetest"
 $maxTags = 10
 $tagsCount = (sudo az acr repository show-tags --name $acrName --repository $acrRepository).length-2

@@ -1,9 +1,18 @@
-$envValues = Get-Content ".\.env" | ForEach-Object { $_.Split('=')[1].Trim() }
+# $envValues = Get-Content ".\.env" | ForEach-Object { $_.Split('=')[1].Trim() }
 
-$az_username = $envValues[0];
-$az_password = $envValues[1];
-$acr_username = $envValues[2];
-$acr_password = $envValues[3];
+# $az_username = $envValues[0];
+# $az_password = $envValues[1];
+# $acr_username = $envValues[2];
+# $acr_password = $envValues[3];
+
+# sudo az login --username $az_username --password $az_password
+# sudo az acr login -n pacticetest --username $acr_username --password $acr_password
+
+#using github secrets 
+$az_username = $env:AZ_USERNAME
+$az_password = $env:AZ_PASSWORD
+$acr_username = $env:ACR_USERNAME
+$acr_password = $env:ACR_PASSWORD
 
 sudo az login --username $az_username --password $az_password
 sudo az acr login -n pacticetest --username $acr_username --password $acr_password

@@ -6,6 +6,12 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  AZ_USERNAME: ${{ secrets.AZ_USERNAME }}
+  AZ_PASSWORD: ${{ secrets.AZ_PASSWORD }}
+  ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+  ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+
 jobs:
   build:
     runs-on: 'ubuntu-latest'
